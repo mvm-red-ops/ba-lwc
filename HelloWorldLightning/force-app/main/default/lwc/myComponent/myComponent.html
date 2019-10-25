@@ -1,0 +1,39 @@
+<template>
+  <lightning-card title="LWC Hello World" icon-name="custom:custom14">
+    <div class="app slds-p-around_x-large">
+      <h1 class="slds-text-heading_large">{title}</h1>
+      <h3> Write JavaScript, HTML, and CSS code, and preview the output in the interactive code editor.</h3>
+      
+      <!-- Using an if statement -->
+      <template if:true={showFeatures}>
+          <div class="slds-p-top_large">
+              <h2 class="slds-text-heading_medium">Features</h2>
+
+              <!-- Using a for statement -->
+              <template for:each={features} for:item='feature'>
+                  <c-child label={feature.label} key={feature.label}>
+                      
+                      <!-- Specifying the 'icon' slot for c-child -->
+                      <lightning-icon icon-name={feature.icon} size="x-small" slot="icon"></lightning-icon>
+                  </c-child>
+              </template>
+          </div>
+      </template>
+
+      <h2 class="slds-text-heading_medium slds-p-top_large">
+          Considerations
+      </h2>
+      <ul class="slds-list_dotted">
+          <li class="slds-m-horizontal_xx-small slds-m-bottom_x-small">All playgrounds have a publicly accessible URL.</li>
+          <li class="slds-m-horizontal_xx-small slds-m-bottom_x-small">When you save a new playground, bookmark the URL or save it elsewhere so you can access it later.</li>
+          <li class="slds-m-horizontal_xx-small slds-m-bottom_x-small">You can't delete a playground.</li>
+      </ul>
+
+      <h2 class="slds-text-heading_medium slds-p-top_large">Resources</h2>
+      <a href="https://developer.salesforce.com/docs/component-library/documentation/lwc/lwc.install_playground">
+          Playground in the Lightning Web Components Developer Guide
+      </a><br/>
+      Created By, {name}!
+  </div>        
+  </lightning-card>
+</template>
