@@ -1,0 +1,54 @@
+
+<template>
+
+    <template if:true={sections.data}>
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+          <thead>
+              <tr class="slds-line-height_reset">
+                  <th class="" scope="col">
+                      <div class="slds-truncate" title="Section">Section</div>
+                  </th>
+                  <th class="" scope="col">
+                      <div class="slds-truncate" title="Completed">Completed</div>
+                  </th>
+              </tr>
+          </thead>
+          <tbody>
+              <template for:each={sections.data} for:item="section">
+                  <tr class="slds-hint-parent" key={section.Id} >
+                      <th data-label="Name" scope="row" >
+                          <div class="slds-truncate"> <span onclick={handleSectionView} data-id={section.Id} class="slds-text-link_reset slds-text-link">{section.Name}</span></div>
+                      </th>
+                      <td data-label="Rating">
+                          <div class="slds-truncate">{section.Completed__c}</div>
+                      </td>
+                  </tr>
+              </template>
+          </tbody>
+      </table>
+    </template>
+
+
+    <!-- Card HTML for tiles -->
+    <!-- <lightning-card title="Sections" icon-name="custom:custom14">
+        <template if:true={sections.data}>
+          <lightning-layout multiple-rows="true" pull-to-boundary="small">
+            <template for:each={sections.data} for:item="section">
+              <lightning-layout-item key={section.Id} size="3" class="slds-p-around_x-small">
+                  <c-section-tile section={section} onsectionview={handleSectionView}></c-section-tile>
+                </lightning-layout-item>
+            </template>
+          </lightning-layout>
+        </template>
+        <template if:true={sections.error}>
+          No Sections found
+        </template>
+    </lightning-card> -->
+        
+    <template if:true={sections.error}>
+        No sections to display 
+    </template>
+</template>
+
+
+
