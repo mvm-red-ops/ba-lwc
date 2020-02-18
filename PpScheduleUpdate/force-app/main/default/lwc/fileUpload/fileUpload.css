@@ -1,0 +1,17 @@
+.hidemodel{
+  display: none;
+}
+
+.custom-footer {
+  height: 3%;
+  text-align: right;
+  align-items: right;
+  margin-top: auto;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.update-button{
+  float:right;
+  margin-right: 2%;
+}

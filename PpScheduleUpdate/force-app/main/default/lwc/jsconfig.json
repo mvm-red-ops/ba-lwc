@@ -5,6 +5,15 @@
         "paths": {
             "c/fileUpload": [
                 "fileUpload/fileUpload.js"
+            ],
+            "c/loadingSpinner": [
+                "loadingSpinner/loadingSpinner.js"
+            ],
+            "c/updateButton": [
+                "updateButton/updateButton.js"
+            ],
+            "c/dealprogramDropdown": [
+                "dealprogramDropdown/dealprogramDropdown.js"
             ]
         }
     },
