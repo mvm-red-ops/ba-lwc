@@ -1,0 +1,25 @@
+<template>
+  <template if:false={dealProgramSelected}>
+      <c-dealprogram-dropdown
+        ondealprogramselection={handleDealProgramSelection}
+      ></c-dealprogram-dropdown>
+  </template>
+
+  <template if:true={dealProgramSelected}>
+    <div>
+      <h2>Deal Program: {dealProgram}</h2>
+      <button onclick={resetState}>Reset</button>
+    </div>
+    <c-file-upload
+    onfileupload={handleFileUploaded}
+    ></c-file-upload>
+  </template>
+
+  <template if:true={state3}>
+    <h1>state 3</h1>
+  </template>
+
+  <template if:true={state4}>
+    <h1>state 4</h1>
+  </template>
+</template>

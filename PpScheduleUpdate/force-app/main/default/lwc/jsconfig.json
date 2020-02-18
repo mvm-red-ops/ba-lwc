@@ -14,6 +14,9 @@
             ],
             "c/dealprogramDropdown": [
                 "dealprogramDropdown/dealprogramDropdown.js"
+            ],
+            "c/baUploadParentWrapper": [
+                "baUploadParentWrapper/baUploadParentWrapper.js"
             ]
         }
     },
