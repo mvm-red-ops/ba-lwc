@@ -6,6 +6,12 @@
             "c/pubsub": [
                 "pubsub/pubsub.js"
             ],
+            "c/schedule": [
+                "schedule/schedule.js"
+            ],
+            "c/section": [
+                "section/section.js"
+            ],
             "c/sectionTile": [
                 "sectionTile/sectionTile.js"
             ],
