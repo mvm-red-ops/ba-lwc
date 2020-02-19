@@ -34,20 +34,10 @@ export default class BaUploadParentWrapper extends LightningElement {
     return this.dealProgramSelected 
   }
 
-  get state3(){
-    window.console.log('state 3: ', this.fileUploaded)
-    return this.fileUploaded
-  }
-
-  get state4(){
-    window.console.log('state 4: ', this.csvDownloadReady)
-    return this.csvDownloadReady
-  }
 
   handleDealProgramSelection(event){
     this.dealProgram = event.detail
     this.dealProgramSelected = true
-    window.console.log('dealprogram selected:', this.dealProgramSelected)
   }
 
   handleFileUploaded(event){

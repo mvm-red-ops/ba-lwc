@@ -40,7 +40,7 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
       { label: 'Previous Values', fieldName: 'PreVals', cellAttributes: { class: { fieldName: 'workingCSSClassPrev' }}, type: 'text'}
     ];
     @track data = [];
-
+    @api dealProgram
     displayFileUpload = true;
     displayColumnsAndHeaders = false;
 
@@ -55,10 +55,7 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
     //similar to component did mount,
     //lifcycle method that fires before component renders
     async handlePrecursor(event){
-      window.console.log('set toggle true (handle precursor)')
       this.toggleSpinner = true;
-      window.console.log(this.toggleSpinner)
-
       this.handleUploadFinished(event)
     }
 
@@ -66,14 +63,14 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
     async handleUploadFinished(event) {
       // Get the list of uploaded files
       const uploadedFiles = event.detail.files;
+      window.console.log('deal program: ', this.dealProgram)
+      window.console.log('file object: ', JSON.stringify(uploadedFiles))
+      window.console.log('file object idx0: ', JSON.stringify(uploadedFiles[0]))
 
       // calling apex class
-      readCSV({idContentDocument : uploadedFiles[0].documentId})
+      readCSV({ idContentDocument : uploadedFiles[0].documentId, dealProgram: this.dealProgram })
         .then(result => {
             this.data = result;
-            // window.console.log('record length')
-            // window.console.log(result.length)
-
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: 'Success!!',
