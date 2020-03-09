@@ -1,0 +1,14 @@
+<template>
+  <div if:true={options}>
+    <lightning-card icon-name="custom:custom13" variant="narrow" title="Deal Program" >
+        <lightning-combobox
+        name="progress"
+        value={value}
+        placeholder="Select Program"
+        options={options}
+        onchange={changeHandler}
+        style="padding: 10px;" >
+      </lightning-combobox>
+    </lightning-card>
+  </div>
+</template>

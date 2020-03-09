@@ -1,0 +1,18 @@
+<template>
+  <template if:false={dealProgramSelected}>
+      <c-dealprogram-dropdown
+        ondealprogramselection={handleDealProgramSelection}
+      ></c-dealprogram-dropdown>
+  </template>
+
+  <template if:true={dealProgramSelected}>
+    <div class="slds-m-bottom_x-small">
+      <lightning-card icon-name="custom:custom13" variant="narrow"  title={dealProgram} >
+        <div>
+          <lightning-button class="slds-m-left_small" variant="destructive" label="Reselect" onclick={resetState}></lightning-button>
+        </div>
+      </lightning-card>
+    </div>
+    <c-file-upload deal-program={dealProgram}></c-file-upload>
+  </template>
+</template>

@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "paths": {
+            "c/fileUpload": [
+                "fileUpload/fileUpload.js"
+            ],
+            "c/loadingSpinner": [
+                "loadingSpinner/loadingSpinner.js"
+            ],
+            "c/updateButton": [
+                "updateButton/updateButton.js"
+            ],
+            "c/dealprogramDropdown": [
+                "dealprogramDropdown/dealprogramDropdown.js"
+            ],
+            "c/baUploadParentWrapper": [
+                "baUploadParentWrapper/baUploadParentWrapper.js"
+            ]
+        }
+    },
+    "include": [
+        "**/*",
+        "../../../../.sfdx/typings/lwc/**/*.d.ts"
+    ],
+    "typeAcquisition": {
+        "include": [
+            "jest"
+        ]
+    }
+}

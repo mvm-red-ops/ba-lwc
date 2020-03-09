@@ -1,0 +1,31 @@
+.hidemodel{
+  display: none;
+}
+
+.custom-footer {
+  height: 3%;
+  text-align: right;
+  align-items: right;
+  margin-top: auto;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.update-button{
+  float:right;
+  margin-right: 2%;
+}
+
+
+/* if someone can get this upload button styled I will give them $100 */
+/* 
+lightning-card div.slds-m-left_medium.slds-size_small lightning-file-upload lightning-input.slds-form-element div.slds-form-element__control div.slds-file-selector.slds-file-selector_files lightning-primitive-file-droppable-zone slot label.slds-file-selector__body span.slds-file-selector__button.slds-button.slds-button_neutral
+{
+  background-color: black;
+  color: green;
+} */
+
+
+
+
+
