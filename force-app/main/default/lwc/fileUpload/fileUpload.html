@@ -6,11 +6,11 @@
   <lightning-card icon-name="custom:custom19" title='Upload BA' > 
     <lightning-button if:true={renderUpdateButton} label="Update" slot="actions" onclick={updateScheds}></lightning-button>
 
-    <div if:true={toggleFileUpload} class="slds-m-left_medium slds-size_small">
+    <div if:true={displayFileUpload} class="slds-m-left_medium slds-size_small">
         <lightning-file-upload
         label={dealProgram}
         name="fileUploader"
-        accept={acceptedFormats}
+        accept={formats}
         record-id={myRecordId}
         onuploadfinished={handlePrecursor}
         multiple>
@@ -138,13 +138,13 @@
     <br/>
           <!-- Data Table start -->
 
-    <div if:true={displayColumnsAndHeaders}>
+    <div if:true={displayDatatable}>
       <div if:true={count} style="height: 22rem;">
           <lightning-datatable columns={columns} 
                                 data={tableScheds} 
                                 key-field="Id"
                                 onrowselection={handleScheduleView}
-                                onrowaction={handleRowActions}>
+                                onrowaction={handleScheduleComparison}>
           </lightning-datatable>
       </div>
 

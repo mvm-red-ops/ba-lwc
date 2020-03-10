@@ -5,9 +5,6 @@ export default class BaUploadParentWrapper extends LightningElement {
   @track dealProgram
   @track fileUploaded
   @track csvDownloadReady
-  @track state0 = true
-  showTemplateOne = true;
-
 
   handleDealProgramSelection(event){
     window.console.log('deal set in parent')

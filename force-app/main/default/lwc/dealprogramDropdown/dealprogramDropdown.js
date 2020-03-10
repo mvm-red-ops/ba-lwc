@@ -16,7 +16,6 @@ const EXCLUDED_VALUES = [
 ]
 
 export default class DealprogramDropdown extends LightningElement {
-    @track selectedOption;
     @track options
     @track value;
 

@@ -2,27 +2,25 @@ import { LightningElement, api, track } from 'lwc';
 import updateSchedules from '@salesforce/apex/TrafficUpdateFromBA_LWC.updateSchedules';
 
 
-const cols = [
-  // { label: 'Schedule Options', fieldName: 'action', type: 'action', typeAttributes: { rowActions: actions, menuAlignment: 'left'}}, 
-  { label: 'Id', fieldName: 'Id'},
-  { label: 'Week', fieldName: 'Week__c'},
-  { label: '800 #', fieldName: 'X800_Number__c'},
-  { label: 'ISCI Code', fieldName: 'ISCI_CODE__c'},
-  { label: 'Show Title', fieldName: 'LF_traffic__c'},
-  { label: 'Rate', fieldName: 'Rate__c'}
-];
 
 export default class UpdateButton extends LightningElement {
   @api exportMatches = [];
   @api exportUnmatches = [];
   @api selectedRows = [];
-  @track resultProcessed;
   @track data;
+  @track error;
   @track success = false;
   @track statuses;
-  @track columns = cols;
+  @track columns = [
+    // { label: 'Schedule Options', fieldName: 'action', type: 'action', typeAttributes: { rowActions: actions, menuAlignment: 'left'}}, 
+    { label: 'Id', fieldName: 'Id'},
+    { label: 'Week', fieldName: 'Week__c'},
+    { label: '800 #', fieldName: 'X800_Number__c'},
+    { label: 'ISCI Code', fieldName: 'ISCI_CODE__c'},
+    { label: 'Show Title', fieldName: 'LF_traffic__c'},
+    { label: 'Rate', fieldName: 'Rate__c'}
+  ];
   @api count;
-  @api renderUpdateButton;
 
   @api
   updateSchedules(event, selectedScheds, matchedScheds, unmatchedSched) {
@@ -104,7 +102,6 @@ export default class UpdateButton extends LightningElement {
       }
 
       this.data = formattedData
-      this.resultProcessed = true
       }
       window.console.log('dispatch event')
       const hidespinnerEvent = new CustomEvent("hidespinner", {

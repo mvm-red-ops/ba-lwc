@@ -5,11 +5,8 @@ import readCSV from '@salesforce/apex/PPTrafficUploader.readCSVFile';
 import Id from '@salesforce/user/Id';
 
 
-
 const actions = [
-  { label: 'Compare Schedule Values', name: 'compare_schedule' },
-  { label: 'Edit', name: 'edit' },
-  { label: 'Delete', name: 'delete' }
+  { label: 'Compare Schedule Values', name: 'compare_schedule' }
 ];
 
 
@@ -17,31 +14,6 @@ const actions = [
 export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) {
     @track data = [];
     @track error;
-    @api dealProgram
-    @api recordId;
-    @track myRecordId = Id;
-    @track count;
-    @track matchedCount;
-    @track unmatchedCount = 0;
-    @track toggleFileUpload = true
-    @track toggleSpinner = false
-    @track tableScheds = {matched: [], unmatched: []};
-    @track unmatchedBAScheds = [];
-    @track unmatchedSFScheds = [];
-    @track matchedScheds = [];
-    @track exportMatches = [];
-    @track exportUnmatches = [];
-    @track selectedRows = [];
-    @track updateResult
-    @track fileUploadUpdateButton
-    @track showModal 
-    @track modalColumns = [
-      { label: 'Name', fieldName: 'Name__c', type: 'text'},
-      { label: '800 #', fieldName: 'X800_Number__c', type: 'text'},
-      { label: 'ISCI Code', fieldName: 'ISCI_CODE__c', type: 'text'},
-      { label: 'Rate', fieldName: 'Rate__c', type: 'text'},
-      { label: 'Show Title', fieldName: 'LF_traffic__c', type: 'text'}
-    ]
     @track columns = [
       { label: 'Schedule', fieldName: 'idUrl', type: 'url', typeAttributes: { label: {fieldName: 'Id'}}, cellAttributes: { class: { fieldName: 'workingCSSClassSchedule' }}, target: '_blank'}, 
       { label: 'Week', fieldName: 'Week__c', type: 'text', cellAttributes: { class: { fieldName: 'workingCSSClassWeek' }} },
@@ -59,9 +31,35 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
         }
       }
     ];
+    @api dealProgram
+    @track count;
+    @track matchedCount;
+    @track unmatchedCount = 0;
+    @track displayFileUpload = true
+    @track toggleSpinner = false
+    @track tableScheds = {matched: [], unmatched: []};
+    @track unmatchedBAScheds = [];
+    @track unmatchedSFScheds = [];
+    @track matchedScheds = [];
+    @track exportMatches = [];
+    @track exportUnmatches = [];
+    @track selectedRows = [];
+    @track updateResult
+    @track myRecordId = Id;
+    @track fileUploadUpdateButton
+    @track showModal 
+    @track modalScheds
+    @track modalColumns = [
+      { label: 'Name', fieldName: 'Name__c', type: 'text'},
+      { label: '800 #', fieldName: 'X800_Number__c', type: 'text'},
+      { label: 'ISCI Code', fieldName: 'ISCI_CODE__c', type: 'text'},
+      { label: 'Rate', fieldName: 'Rate__c', type: 'text'},
+      { label: 'Show Title', fieldName: 'LF_traffic__c', type: 'text'}
+    ]
+
 
     displayFileUpload = true;
-    displayColumnsAndHeaders = false;
+    displayDatatable = false;
 
     get acceptedFormats() {
         return ['.csv'];
@@ -91,7 +89,6 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
     async handlePrecursor(event){
       this.toggleSpinner = true;
       this.error = null;
-      window.console.log('this.show spinner', this.toggleSpinner)
       this.handleUploadFinished(event)
     }
 
@@ -139,14 +136,6 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
             );     
         })
     }
-    // better way of establish data exists 
-  
-    get hasResults() {
-      return (this.sections.data.length > 0);
-    }
-    
-
-
 
       /*
         s = schedule
@@ -234,9 +223,9 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
 
       // matchedScheds format:
       // {"":{"isci":["N1010511451H\r"],"rate":["1000.00"],"phone":["800-493-9642"],"longform":["A-5:00"],"matched":["false"]}}
-      this.displayColumnsAndHeaders = true
+      this.displayDatatable = true
       this.tableScheds = [...this.tableScheds.unmatched, ...this.tableScheds.matched]
-      this.toggleFileUpload = false
+      this.displayFileUpload = false
       return ['finished']
     }
 
@@ -258,15 +247,6 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
       window.console.log(this.toggleSpinner)
     }
 
-    showFileUpload(){
-      // window.console.log('show file: fx')
-      this.displayFileUpload = true;
-    }
-
-    hideFileUpload(){
-      // window.console.log('hide file: fx')
-      this.displayFileUpload = false;
-    }
 
     updateScheds(event){   
       window.console.log('update shcedules function: ')
@@ -278,7 +258,7 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
         .updateSchedules(event, this.selectedRows, this.matchedScheds, this.unmatchedScheds)        
     }
 
-    handleRowActions(event) {
+    handleScheduleComparison(event) {
       let rowId = event.detail.row.Id;
       const modalRows = []
 
