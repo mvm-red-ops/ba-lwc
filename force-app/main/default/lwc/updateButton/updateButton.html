@@ -8,8 +8,8 @@
       class="slds-m-left_x-small update-button">
     </lightning-button>
   </lightning-card>   
-    <lightning-card if:true={resultProcessed} title="Export Data as CSV in Lightning Web Components" icon-name="custom:custom63">
-        <template if:true={data}>
+    <lightning-card  if:true={success} title="Export Data as CSV in Lightning Web Components" icon-name="custom:custom63">
+        <div class="slds-align_absolute-center" if:true={data}>
             <div class="slds-p-around_medium lgc-bg-inverse">
                 <p>Do you want download data as a CSV format, Click Here &nbsp;
                     <lightning-button icon-name="utility:download" 
@@ -18,14 +18,14 @@
                                       onclick={downloadCSVFile} variant="brand"></lightning-button>
                 </p>
             </div>
-            <div class="slds-m-around_medium">
-                <!-- Datatable component -->
-                    <lightning-datatable columns={columns} 
-                                         data={data} 
-                                         hide-checkbox-column="true"
-                                         key-field="id"></lightning-datatable>
-            
-            </div>
-        </template>
+        </div>
+        <div class="slds-m-around_medium">
+          <!-- Datatable component -->
+              <lightning-datatable columns={columns} 
+                                   data={data} 
+                                   hide-checkbox-column="true"
+                                   key-field="id"></lightning-datatable>
+      
+        </div>
     </lightning-card>
 </template>  

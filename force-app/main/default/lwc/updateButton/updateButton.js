@@ -10,7 +10,7 @@ export default class UpdateButton extends LightningElement {
   @track data;
   @track error;
   @track success = false;
-  @track statuses;
+  @track status;
   @track columns = [
     // { label: 'Schedule Options', fieldName: 'action', type: 'action', typeAttributes: { rowActions: actions, menuAlignment: 'left'}}, 
     { label: 'Id', fieldName: 'Id'},
@@ -82,26 +82,34 @@ export default class UpdateButton extends LightningElement {
     }
 
     formatData(data){
-      if(data[0].updateStatus){
-        this.success = true
-        this.statuses = [{'key': 1, 'name': 'Process', 'status': data[0].updateStatus}, {'key': 2,'name': 'Matches', 'status': data[0].matchStatus}]
-      } else {
-      //format data
-      const formattedData = [];
-      for(let i = 0; i < data.length; i++){
-        let curr = data[i]
-        let formatted = Object.assign({}, curr)
-        const isSalesforceId = curr.Id.split(' ').length === 1
+      window.console.log('FORMAT RETURNED DATA FROM SERVER')
+      window.console.log(JSON.stringify(data))
 
-        if(!isSalesforceId){
-          formatted.Id = 'Record From BA'
-          window.console.log(JSON.stringify(formatted))
+      try{
+        this.success = true
+        const statusObject = Object.keys(data)[0]
+        const schedules = Object.values(data)[0]
+        //format data
+        window.console.log('finding status')
+        window.console.log(JSON.stringify(statusObject))
+
+        const formattedSchedules = [];
+        for(let i = 0; i < schedules.length; i++){
+          let curr = schedules[i]
+          let formatted = Object.assign({}, curr)
+          const isSalesforceId = curr.Id.split(' ').length === 1
+
+          if(!isSalesforceId){
+            formatted.Id = 'Record From BA'
+            window.console.log(JSON.stringify(formatted))
+          }
+
+          formattedSchedules.push(formatted)
         }
 
-        formattedData.push(formatted)
-      }
-
-      this.data = formattedData
+        this.data = formattedSchedules
+      } catch(e){
+        window.console.log(e)
       }
       window.console.log('dispatch event')
       const hidespinnerEvent = new CustomEvent("hidespinner", {

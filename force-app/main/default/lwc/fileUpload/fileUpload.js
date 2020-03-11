@@ -59,7 +59,7 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
 
 
     displayFileUpload = true;
-    displayDatatable = false;
+    @track displayDatatable = false;
 
     get acceptedFormats() {
         return ['.csv'];
@@ -148,6 +148,7 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
           "rate" : [s.rate],
           "phone" : [s.phone],
           "longform" : [s.longform],
+          "showtitle" : [s.showtitle],
           "matched" : ["true" or "false" depending on if it had sched match]
         }
       }
@@ -224,6 +225,7 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
       // matchedScheds format:
       // {"":{"isci":["N1010511451H\r"],"rate":["1000.00"],"phone":["800-493-9642"],"longform":["A-5:00"],"matched":["false"]}}
       this.displayDatatable = true
+      window.console.log('display datatable = true')
       this.tableScheds = [...this.tableScheds.unmatched, ...this.tableScheds.matched]
       this.displayFileUpload = false
       return ['finished']
@@ -232,7 +234,6 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
     handleScheduleView(event) {
       this.selectedRows = event.detail.selectedRows
     }
-
 
 
     showSpinner(){
