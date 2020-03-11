@@ -1,5 +1,5 @@
 <template>
-  <lightning-card if:false={success}>
+  <lightning-card if:false={success} class="slds-m-around_x-small">
     <lightning-button 
       variant="brand" 
       label="Update" 
@@ -8,8 +8,9 @@
       class="slds-m-left_x-small update-button">
     </lightning-button>
   </lightning-card>   
-    <lightning-card  if:true={success} title="Export Data as CSV in Lightning Web Components" icon-name="custom:custom63">
-        <div class="slds-align_absolute-center" if:true={data}>
+  
+    <lightning-card class="slds-m-around_x-small" style="text-align:left;" if:true={success} icon-name="custom:custom63"  title="Export Data">
+        <div if:true={data}>
             <div class="slds-p-around_medium lgc-bg-inverse">
                 <p>Do you want download data as a CSV format, Click Here &nbsp;
                     <lightning-button icon-name="utility:download" 
@@ -18,14 +19,18 @@
                                       onclick={downloadCSVFile} variant="brand"></lightning-button>
                 </p>
             </div>
+        </div>    
+      </lightning-card>
+
+      <lightning-card class="slds-m-around_x-small" style="text-align: left;" icon-name="custom:custom13" variant="narrow" title="Unmatched BA Schedules" >
+        <div class="slds-card__header slds-grid">
+          <div class="slds-card__body">
+            <lightning-datatable columns={columns} 
+                        data={data} 
+                        hide-checkbox-column="true"
+                        key-field="id">
+            </lightning-datatable>
+          </div>
         </div>
-        <div class="slds-m-around_medium">
-          <!-- Datatable component -->
-              <lightning-datatable columns={columns} 
-                                   data={data} 
-                                   hide-checkbox-column="true"
-                                   key-field="id"></lightning-datatable>
-      
-        </div>
-    </lightning-card>
+      </lightning-card>    
 </template>  

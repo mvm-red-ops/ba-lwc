@@ -4,6 +4,11 @@
   </lightning-card>
 
   <lightning-card icon-name="custom:custom19" title='Upload BA' > 
+    <div if:true={updateResult}>
+      <p id="action" class="slds-box slds-text-heading_small">
+        <lightning-icon icon-name="action:approval" alternative-text="Upload Completed" title="Upload Completed"></lightning-icon>
+      </p>
+    </div>
     <lightning-button if:true={renderUpdateButton} label="Update" slot="actions" onclick={updateScheds}></lightning-button>
 
     <div if:true={displayFileUpload} class="slds-m-left_medium slds-size_small">
@@ -15,7 +20,7 @@
         onuploadfinished={handlePrecursor}
         multiple>
       </lightning-file-upload>        
-    </div><br/>
+    </div>
 
     <div if:true={toggleSpinner}>
       <c-loading-spinner></c-loading-spinner>
@@ -135,7 +140,6 @@
       <div class="slds-card__body slds-card__body_inner">{error.body.message}</div>
     </lightning-card>
     
-    <br/>
           <!-- Data Table start -->
 
     <div if:true={displayDatatable}>
