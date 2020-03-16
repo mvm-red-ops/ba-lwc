@@ -202,15 +202,7 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
         let schedule = this.unmatchedBAScheds[i];
         const schedArr = this.formatUnmatchedBaSchedule(schedule)
         this.tableScheds.unmatched.push(schedArr[0])
-        this.exportUnmatches.push(schedArr[1])
-      }
-
-      //format unmatched SF schedules
-      for(let i = 0; i < this.unmatchedSFScheds.length; i++){
-        let schedule = this.unmatchedSFScheds[i];
-        const schedArr = this.formatUnmatchedSfSchedule(schedule)
-        this.tableScheds.unmatched.push(schedArr[0])
-        this.exportUnmatches.push(schedArr[1])
+        this.exportUnmatches.push(schedArr[0])
       }
 
       //format matched schedules
@@ -325,16 +317,16 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
     const schedObj = {'Id': key}
     const exportSched = {'Id' : key}
 
+    window.console.log('unmatched Schedule format')
     exportSched.ISCI_CODE__c = schedObj.ISCI_CODE__c = fields.isci[0] || 'no isci'
     exportSched.Rate__c = schedObj.Rate__c = fields.rate[0] || 'no rate'
     exportSched.X800_Number__c = schedObj.X800_Number__c = fields.phone[0] || 'no phone'
     exportSched.LF_traffic__c = schedObj.LF_traffic__c = fields.showtitle[0] || 'no isci'
     schedObj.Long_Form__c = fields.longform[0] || 'no longform'
-    schedObj.Week__c = fields.week[0] || 'no week'
-    schedObj.Week__c = fields.week[0]
+    schedObj.Week__c = fields.week[0].split(' ')[0] || 'no week'
     schedObj.DealProgram__c = fields.dealprog[0]
-    schedObj.Long_Form__c = fields.longform[0]
     schedObj.idUrl  = '/' + key;
+    window.console.log(JSON.stringify(schedObj))
 
     
     //the key for unmatched schedules is an id
@@ -365,7 +357,7 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
     
     exportSched.ISCI_CODE__c = schedObj.ISCI_CODE__c = fields.isci[0] || 'no isci'
     schedObj.Long_Form__c = fields.longform[0] || 'no longform'
-    schedObj.Week__c = fields.week[0] || 'no week'
+    schedObj.Week__c = fields.week[0].split(' ')[0] || 'no week'
     exportSched.Rate__c = schedObj.Rate__c = fields.rate[0] || 'no rate'
     exportSched.X800_Number__c = schedObj.X800_Number__c = fields.phone[0] || 'no phone'
     exportSched.LF_traffic__c = schedObj.LF_traffic__c = fields.showtitle[0] || 'no isci'
@@ -402,7 +394,7 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
     const exportSched = {'Id': key}
     const valueMap = {'Id': key}
 
-    if(!fields[0]) return 'skip' 
+    if(!fields[0]) return 'skip'
     fields = fields[0]
 
     window.console.log('matched schedule formatting...')

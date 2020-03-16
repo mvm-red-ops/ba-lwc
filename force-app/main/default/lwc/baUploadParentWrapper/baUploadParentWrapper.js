@@ -6,13 +6,13 @@ export default class BaUploadParentWrapper extends LightningElement {
   @track fileUploaded
   @track csvDownloadReady
 
+  //handles selection of deal program from dropdown
   handleDealProgramSelection(event){
-    window.console.log('deal set in parent')
     this.dealProgram = event.detail
     this.dealProgramSelected = true
-    window.console.log('deal program:', this.dealProgram)
   }
 
+  //completely resets state to initial values, used mainly for reselecting deal program
   resetState(event){
    this.dealProgramSelected = null
    this.dealProgram = null

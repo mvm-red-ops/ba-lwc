@@ -15,6 +15,7 @@ export default class UpdateButton extends LightningElement {
     // { label: 'Schedule Options', fieldName: 'action', type: 'action', typeAttributes: { rowActions: actions, menuAlignment: 'left'}}, 
     { label: 'Id', fieldName: 'Id'},
     { label: 'Week', fieldName: 'Week__c'},
+    { label: 'Long From', fieldName: 'Long_Form__c'},
     { label: '800 #', fieldName: 'X800_Number__c'},
     { label: 'ISCI Code', fieldName: 'ISCI_CODE__c'},
     { label: 'Show Title', fieldName: 'LF_traffic__c'},
@@ -64,8 +65,8 @@ export default class UpdateButton extends LightningElement {
     let scheds = []
     scheds.push(unselectedUnmatches);
     scheds.push(unselectedMatches);
-    window.console.log('HERE? dispatch event');
-
+    window.console.log('UNMATCHED BEFORE UDPATE')
+    window.console.log(JSON.stringify(unselectedUnmatches))
       updateSchedules({scheds})
               .then(result => { 
                   window.console.log('result', JSON.stringify(result));
