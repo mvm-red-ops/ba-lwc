@@ -19,7 +19,7 @@ export default class BaUploadParentWrapper extends LightningElement {
    this.fileUploaded = null
    this.csvDownloadReady = null
   }
-
+//trial comment
 }
 
 
