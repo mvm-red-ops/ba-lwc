@@ -242,9 +242,7 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
 
 
     updateScheds(event){   
-      window.console.log('update shcedules function: ')
       this.showSpinner()
-      window.console.log('show spinner: ')
 
       this.template
         .querySelector("c-update-button")
@@ -455,10 +453,26 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
   }
 
   handleUpdateInitiated(event){
-    this.updateResult = true
+    this.updateResult = {}
     this.count = false
     window.console.log('hiding table...')
   }
+  handleUpdateSucceeded(event){
+    window.console.log(event)
+    window.console.log(event.detail)
+    window.console.log('success handler')
+    this.updateResult.success = true
+    this.updateResult.error = false
+  }
+
+  handleUpdateFailed(event){
+    window.console.log(event)
+    window.console.log(event.detail)
+    window.console.log('error handler')
+    this.updateResult.error = true
+    this.updateResult.success = false
+  }
+
 }
 
 

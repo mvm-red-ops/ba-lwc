@@ -1,12 +1,16 @@
 <template>
   <lightning-card if:false={success} class="slds-m-around_x-small">
     <lightning-button 
+      if:false={error}
       variant="brand" 
       label="Update" 
       title="Primary action" 
       onclick={updateSchedules} 
       class="slds-m-left_x-small update-button">
     </lightning-button>
+    <div if:true={error}>
+      <p>The following error occurred: {error}</p>
+    </div>
   </lightning-card>   
   
     <lightning-card class="slds-m-around_x-small" style="text-align:left;" if:true={success} icon-name="custom:custom63"  title="Export Data">

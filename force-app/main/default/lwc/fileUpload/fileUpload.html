@@ -5,8 +5,12 @@
 
   <lightning-card icon-name="custom:custom19" title='Upload BA' > 
     <div if:true={updateResult}>
-      <p id="action" class="slds-box slds-text-heading_small">
+      <p if:true={updateResult.success} id="update-success" class="slds-box slds-text-heading_small">
         <lightning-icon icon-name="action:approval" alternative-text="Upload Completed" title="Upload Completed"></lightning-icon>
+      </p>
+
+      <p if:true={updateResult.error} id="update-failed" class="slds-box slds-text-heading_small">
+        <lightning-icon icon-name="action:close" alternative-text="Update Failed" title="Upload Completed"></lightning-icon>
       </p>
     </div>
     <lightning-button if:true={renderUpdateButton} label="Update" slot="actions" onclick={updateScheds}></lightning-button>
@@ -207,8 +211,10 @@
           export-matches={exportMatches} 
           export-unmatches={exportUnmatches} 
           selected-rows={selectedRows} 
-          onupdateinitiated={handleUpdateInitiated}
           onhidespinner={hideSpinner}
+          onupdateinitiated={handleUpdateInitiated}
+          onupdatesucceeded={handleUpdateSucceeded}
+          onupdatefailed={handleUpdateFailed}
           >
         </c-update-button>
       </div>
