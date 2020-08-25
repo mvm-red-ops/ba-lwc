@@ -1,6 +1,6 @@
 <template>
   <lightning-card if:true={noMatches} icon-name="custom:custom53" title='No Matches' style="margin-bottom: 20px;" >
-        <div class="slds-card__body slds-card__body_inner" style="margin-bottom: 20px;"> There were no matching schedules in Salesforce. Please check that you are uploading the right BA based on Date and Long Form value.</div>
+        <div style="margin-bottom: 20px;"> There were no matching schedules in Salesforce. Please check that you are uploading the right BA based on Date and Long Form value.</div>
   </lightning-card>
 
   <lightning-card icon-name="custom:custom19" title='Upload BA' > 
@@ -15,7 +15,7 @@
     </div>
     <lightning-button if:true={renderUpdateButton} label="Update" slot="actions" onclick={updateScheds}></lightning-button>
 
-    <div if:true={displayFileUpload} class="slds-m-left_medium slds-size_small">
+    <div if:true={displayFileUpload}>
         <lightning-file-upload
         label={dealProgram}
         name="fileUploader"
@@ -32,7 +32,7 @@
  
       <!-- Legend start -->
 
-    <div if:true={count} class="slds-grid slds-align_absolute-center" style="max-width: 70%;box-shadow: 1px 1px 2px 3px #ccc">
+    <div if:true={count} style="max-width: 70%;box-shadow: 1px 1px 2px 3px #ccc">
       <div class="slds-col " style="padding: 2.5px">
           <div class="slds-grid slds-grid--align-center slds-grid_vertical" style="padding: 2rem; margin-left: 3rem;">
             <div class="slds-col" style="margin: 2.5px 0px 2px 20px; ">
@@ -141,7 +141,7 @@
 
     <br/>
     <lightning-card if:true={error} icon-name="custom:custom53" title='Error!'>
-      <div class="slds-card__body slds-card__body_inner">{error.body.message}</div>
+      <div class="slds-card__body slds-card__body_inner ">{error.body.message}</div>
     </lightning-card>
     
           <!-- Data Table start -->

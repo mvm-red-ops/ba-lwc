@@ -4,7 +4,6 @@ import { NavigationMixin } from 'lightning/navigation';
 import readCSV from '@salesforce/apex/PPTrafficUploader.readCSVFile';
 import Id from '@salesforce/user/Id';
 
-
 const actions = [
   { label: 'Compare Schedule Values', name: 'compare_schedule' }
 ];
@@ -57,22 +56,20 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
       { label: 'Show Title', fieldName: 'LF_traffic__c', type: 'text'}
     ]
 
-
     displayFileUpload = true;
     @track displayDatatable = false;
 
     get acceptedFormats() {
+      window.console.log('this.Id')
+      window.console.log(this.Id)
         return ['.csv'];
     }
  
     get renderUpdateButton() {
-      window.console.log('GET RENDER UPDATE BUTTON count: ', this.count)
-      window.console.log('GET RENDER UPDATE BUTTON matchedScheds: ', this.matchedScheds.length)
       return this.matchedScheds.length > 0 && !this.updateResult
     }
     
     set renderUpdateButton(event){
-      window.console.log('render update button, ', event)
       return false
     }
 
