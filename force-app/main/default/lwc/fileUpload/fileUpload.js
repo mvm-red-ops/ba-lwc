@@ -86,6 +86,7 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
     async handlePrecursor(event){
       this.toggleSpinner = true;
       this.error = null;
+      window.console.log(`file upload handler: ${JSON.stringify(event)}`)
       this.handleUploadFinished(event)
     }
 
@@ -97,7 +98,8 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
       const id = uploadedFiles[0].documentId
 
       // calling apex class
-      window.console.log('show me... SPINNER')
+      window.console.log(`uploadedFileId: ${id}, sf id: ${Id}, uploaded file: ${JSON.stringify(event.detail)}`)
+      
       readCSV({idContentDocument: id, dealProgram: this.dealProgram })
         .then(result => {
             //result is a map of schedules 
@@ -115,7 +117,6 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
         })
        .then(() => this.formatData(this.data)) 
        .then( result => {
-          window.console.log('hopefully no error, plus result = ', result)
           this.hideSpinner()
        })       
         .catch(error => {
@@ -221,6 +222,9 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
     }
 
     handleScheduleView(event) {
+      window.console.log(JSON.stringify(event.detail.selectedRows))
+      window.console.log(JSON.stringify(event.detail))
+      window.console.log(JSON.stringify(event.target))
       this.selectedRows = event.detail.selectedRows
     }
 

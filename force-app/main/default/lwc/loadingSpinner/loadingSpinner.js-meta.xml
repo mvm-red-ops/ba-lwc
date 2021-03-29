@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="loadingSpinner">
     <apiVersion>45.0</apiVersion>
-    <isExposed>True</isExposed>
+    <isExposed>false</isExposed>
  <masterLabel>Loading Spinner</masterLabel>
   <description>LWC to take decision which Account view to show </description>
-  <targets>
-      <target>lightning__RecordPage</target>
-      <target>lightning__AppPage</target>
-      <target>lightning__HomePage</target>
-  </targets>
 </LightningComponentBundle>

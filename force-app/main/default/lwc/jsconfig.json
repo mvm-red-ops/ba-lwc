@@ -17,6 +17,12 @@
             ],
             "c/baUploadParentWrapper": [
                 "baUploadParentWrapper/baUploadParentWrapper.js"
+            ],
+            "c/dataTable": [
+                "dataTable/dataTable.js"
+            ],
+            "c/legend": [
+                "legend/legend.js"
             ]
         }
     },
@@ -27,6 +33,11 @@
     "typeAcquisition": {
         "include": [
             "jest"
+        ]
+    },
+    "paths": {
+        "c/*": [
+            "*"
         ]
     }
 }
