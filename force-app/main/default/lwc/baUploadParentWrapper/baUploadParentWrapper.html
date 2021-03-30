@@ -18,12 +18,23 @@
       onfileupload={handleFileUpload}
     ></c-file-upload>
     </template>
+    
     <template if:true={documentId}>
+       <!-- Legend start -->
+       <c-legend
+       count={count}
+       matched-count={matchedCount}
+       unmatched-count={unmatchedCount}
+       ></c-legend>
+     <!-- Legend start -->
+      <!-- Data table start -->
       <c-data-table
         document-id={documentId}
         deal-program={dealProgram}
-        onspinnerhandler={spinnerHandler}>
-    </c-data-table>
+        onspinnerhandler={spinnerHandler}
+        oncount={countHandler}>
+      </c-data-table>
+      <!-- Data table start -->
     </template>
   </template>
 

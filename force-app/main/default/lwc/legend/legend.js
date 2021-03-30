@@ -1,7 +1,9 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, api } from 'lwc';
 
 export default class Legend extends LightningElement {
-    count;
-    matchedCount;
-    unmatchedCount = 0;
+    @api count;
+    @api matchedCount;
+    @api unmatchedCount;
+
+
 }

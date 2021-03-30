@@ -24,19 +24,13 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
  
 
     async handlePrecursor(event){
-     // this.toggleSpinner = true;
       this.error = null;
-      window.console.log(`file upload handler: ${JSON.stringify(event)}`)
-
       const fileUploadEvent = new CustomEvent("fileupload", {
         detail: event
       });
-
-      // this.value = event.detail.value;
       this.dispatchEvent(fileUploadEvent);
-
     }
-
+  }
   //   //callback from csv file upload
   //   async handleUploadFinished(event) {
 
@@ -421,7 +415,7 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
   //   this.updateResult.success = false
   // }
 
-}
+//}
 
 
 

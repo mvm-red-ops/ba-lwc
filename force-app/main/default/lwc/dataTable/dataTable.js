@@ -182,6 +182,7 @@ export default class DataTable extends LightningElement {
         this.unmatchedCount = dictionary.unmatchedBA.toString()
         this.matchedCount = dictionary.matched.toString()
         this.count =  (dictionary.unmatchedBA + dictionary.matched).toString()
+        this.sendCount({'unmatched': dictionary.unmatchedBA, 'matched': dictionary.matched, 'total': dictionary.unmatchedBA + dictionary.matched})
   
         //format unmatched BA schedules
         for(let i = 0; i < this.unmatchedBAScheds.length; i++){
@@ -203,19 +204,24 @@ export default class DataTable extends LightningElement {
         // matchedScheds format:
         // {"":{"isci":["N1010511451H\r"],"rate":["1000.00"],"phone":["800-493-9642"],"longform":["A-5:00"],"matched":["false"]}}
         this.displayDatatable = true
-        window.console.log('display datatable = true')
         this.tableScheds = [...this.tableScheds.unmatched, ...this.tableScheds.matched]
         this.displayFileUpload = false
         return ['finished']
       }
   
       handleScheduleView(event) {
-        window.console.log(JSON.stringify(event.detail.selectedRows))
-        window.console.log(JSON.stringify(event.detail))
-        window.console.log(JSON.stringify(event.target))
         this.selectedRows = event.detail.selectedRows
       }
   
+      sendCount(countObj){
+
+        const countEvent = new CustomEvent("count", {
+          detail: countObj
+        });
+  
+        // this.value = event.detail.value;
+        this.dispatchEvent(countEvent);
+      }
   
       showSpinner(){
         const hideSpinner = new CustomEvent("spinnerhandler", {
@@ -280,12 +286,9 @@ export default class DataTable extends LightningElement {
         this.modalScheds = modalRows
   
         if(!foundSchedule){
-          window.console.log("Sorry! We couldn't find a matching schedule!")
           return 
         }
-  
-        window.console.log(`Modal values: ${JSON.stringify(modalRows)}`)
-        
+          
         this.viewScheduleComparison(valMap)
     }
 
@@ -312,7 +315,6 @@ export default class DataTable extends LightningElement {
       const schedObj = {'Id': key}
       const exportSched = {'Id' : key}
   
-      window.console.log('unmatched Schedule format')
       exportSched.ISCI_CODE__c = schedObj.ISCI_CODE__c = fields.isci[0] || 'no isci'
       exportSched.Rate__c = schedObj.Rate__c = fields.rate[0] || 'no rate'
       exportSched.X800_Number__c = schedObj.X800_Number__c = fields.phone[0] || 'no phone'
@@ -321,15 +323,12 @@ export default class DataTable extends LightningElement {
       schedObj.Week__c = fields.week[0].split(' ')[0] || 'no week'
       schedObj.DealProgram__c = fields.dealprog[0]
       schedObj.idUrl  = '/' + key;
-      window.console.log(JSON.stringify(schedObj))
   
       
       //the key for unmatched schedules is an id
       //the key for unamtched csv records is multiple concat fields with a space between
       //in order to determine if we need to assign an idUrl we run the below check
       if(key){
-        // window.console.log('UNMATCHED KEY COLOR')
-        // window.console.log(JSON.stringify(key))
           schedObj.workingCSSClassSchedule = 'slds-icon-custom-custom92'
           schedObj.workingCSSClassWeek = 'slds-icon-custom-custom92'
           schedObj.workingCSSClassDealProg = 'slds-icon-custom-custom92'
@@ -365,8 +364,6 @@ export default class DataTable extends LightningElement {
       //the key for unamtched csv records is multiple concat fields with a space between
       //in order to determine if we need to assign an idUrl we run the below check
       if(key){
-        // window.console.log('UNMATCHED KEY COLOR')
-        // window.console.log(JSON.stringify(key))
           schedObj.idUrl  = '/' + key;
           schedObj.workingCSSClassSchedule = 'slds-color__background_gray-7'
           schedObj.workingCSSClassWeek = 'slds-color__background_gray-7'
@@ -392,8 +389,6 @@ export default class DataTable extends LightningElement {
       if(!fields[0]) return 'skip'
       fields = fields[0]
   
-      window.console.log('matched schedule formatting...')
-      window.console.log(`${key}: ${JSON.stringify(fields)}`)
   
       //check for changed values
       //fields.col has an array value
@@ -452,20 +447,13 @@ export default class DataTable extends LightningElement {
     handleUpdateInitiated(event){
       this.updateResult = {}
       this.count = false
-      window.console.log('hiding table...')
     }
     handleUpdateSucceeded(event){
-      window.console.log(event)
-      window.console.log(event.detail)
-      window.console.log('success handler')
       this.updateResult.success = true
       this.updateResult.error = false
     }
   
     handleUpdateFailed(event){
-      window.console.log(event)
-      window.console.log(event.detail)
-      window.console.log('error handler')
       this.updateResult.error = true
       this.updateResult.success = false
     }
