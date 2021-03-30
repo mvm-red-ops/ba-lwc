@@ -13,6 +13,22 @@
         </div>
       </lightning-card>
     </div>
-    <c-file-upload deal-program={dealProgram}></c-file-upload>
+    <template if:false={documentId}>
+      <c-file-upload 
+      onfileupload={handleFileUpload}
+    ></c-file-upload>
+    </template>
+    <template if:true={documentId}>
+      <c-data-table
+        document-id={documentId}
+        deal-program={dealProgram}
+        onspinnerhandler={spinnerHandler}>
+    </c-data-table>
+    </template>
   </template>
+
+  <template if:true={toggleSpinner}>
+    <c-loading-spinner></c-loading-spinner>
+  </template>
+
 </template>
