@@ -11,83 +11,23 @@ const actions = [
 
 
 export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) {
-    @track data = [];
-    @track error;
-    @track columns = [
-      { label: 'Schedule', fieldName: 'idUrl', type: 'url', typeAttributes: { label: {fieldName: 'Id'}}, cellAttributes: { class: { fieldName: 'workingCSSClassSchedule' }}, target: '_blank'}, 
-      { label: 'Week', fieldName: 'Week__c', type: 'text', cellAttributes: { class: { fieldName: 'workingCSSClassWeek' }} },
-      { label: 'Show Title', fieldName: 'LF_traffic__c', type: 'text', cellAttributes: { class: { fieldName: 'workingCSSClassShowTitle'}}}, 
-      { label: 'Deal Program', fieldName: 'DealProgram__c', type: 'text', cellAttributes: { class: { fieldName: 'workingCSSClassDealProg'}}}, 
-      { label: 'Long Form', fieldName: 'Long_Form__c', type: 'text', cellAttributes: { class: { fieldName: 'workingCSSClassLongForm' }}},
-      { label: '800 #', fieldName: 'X800_Number__c', type: 'text', cellAttributes: { class: { fieldName: 'workingCSSClassPhone' }}},
-      { label: 'ISCI Code', fieldName: 'ISCI_CODE__c', type: 'text', cellAttributes: { class: { fieldName: 'workingCSSClassISCI' }}},
-      { label: 'Rate', fieldName: 'Rate__c', type: 'text', cellAttributes: { class: { fieldName: 'workingCSSClassRate'}}},
-      {
-        type: 'action',
-        typeAttributes: {
-          rowActions: actions,
-            menuAlignment: 'right'
-        }
-      }
-    ];
-    @api dealProgram
-    @track count;
-    @track matchedCount;
-    @track unmatchedCount = 0;
-    @track displayFileUpload = true
-    @track toggleSpinner = false
-    @track tableScheds = {matched: [], unmatched: []};
-    @track unmatchedBAScheds = [];
-    @track unmatchedSFScheds = [];
-    @track matchedScheds = [];
-    @track exportMatches = [];
-    @track exportUnmatches = [];
-    @track selectedRows = [];
-    @track updateResult
-    @track myRecordId = Id;
-    @track fileUploadUpdateButton
-    @track showModal 
-    @track modalScheds
-    @track modalColumns = [
-      { label: 'Name', fieldName: 'Name__c', type: 'text'},
-      { label: '800 #', fieldName: 'X800_Number__c', type: 'text'},
-      { label: 'ISCI Code', fieldName: 'ISCI_CODE__c', type: 'text'},
-      { label: 'Rate', fieldName: 'Rate__c', type: 'text'},
-      { label: 'Show Title', fieldName: 'LF_traffic__c', type: 'text'}
-    ]
-
+    error
+    displayFileUpload = true
+    toggleSpinner = false
+    updateResult
+    myRecordId = Id;
     displayFileUpload = true;
-    @track displayDatatable = false;
 
     get acceptedFormats() {
         return ['.csv'];
     }
  
-    get renderUpdateButton() {
-      return this.matchedScheds.length > 0 && !this.updateResult
-    }
-    
-    set renderUpdateButton(event){
-      return false
-    }
 
-    get renderUpdateComponent(){
-      return this.matchedScheds.length > 0 
-    }
-
-
-    get noMatches(){
-      return this.matchedScheds.length === 0 && this.unmatchedBAScheds.length > 0 && this.unmatchedSFScheds.length
-    }
-
-    //similar to component did mount,
     async handlePrecursor(event){
      // this.toggleSpinner = true;
       this.error = null;
       window.console.log(`file upload handler: ${JSON.stringify(event)}`)
-     // this.handleUploadFinished(event)
 
-      //new 
       const fileUploadEvent = new CustomEvent("fileupload", {
         detail: event
       });
@@ -486,14 +426,5 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
 
 
   
-
-
-
-/*
-
-List<<Map<String, Map<String, List<String>>>>>
-
- [{"a080R000006ybDjQAI":{"rate":["1100.00","1100.00","false"],"phone":["800-405-6210","true"],"longform":["A-3:00","A-3:00","false"],"isci":["N1003513600H\r","true"],"matched":["true"],"week":["2020-01-14"],"daypart":["ON"],"dayofweek":["2Tues"],"dealprog":["COURTTV Mystery PP"]}},
- */
 
 
