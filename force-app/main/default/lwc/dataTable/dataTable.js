@@ -299,7 +299,7 @@ export default class DataTable extends LightningElement {
 
   
       // closing modal box
-      closeModal() {
+      closeModal(event) {
           this.showModal = false;
       }
   
