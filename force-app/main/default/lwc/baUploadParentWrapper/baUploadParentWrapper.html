@@ -19,22 +19,27 @@
     ></c-file-upload>
     </template>
     
-    <template if:true={documentId}>
+    <template if:true={displayDatatable}>
        <!-- Legend start -->
        <c-legend
-       count={count}
        matched-count={matchedCount}
        unmatched-count={unmatchedCount}
        ></c-legend>
-     <!-- Legend start -->
+      <!-- Legend end -->
+
       <!-- Data table start -->
       <c-data-table
-        document-id={documentId}
-        deal-program={dealProgram}
-        onspinnerhandler={spinnerHandler}
-        oncount={countHandler}>
+        sched-data={data}
+        table-scheds={dataTableScheds}
+        onscheduleselected={handleScheduleSelection}>
       </c-data-table>
       <!-- Data table start -->
+
+      <!--Update button start-->
+      <c-update-button
+
+      ></c-update-button>
+      <!--Update button end-->
     </template>
   </template>
 

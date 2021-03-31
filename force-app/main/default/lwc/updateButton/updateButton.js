@@ -8,11 +8,11 @@ export default class UpdateButton extends LightningElement {
   @api exportMatches = [];
   @api exportUnmatches = [];
   @api selectedRows = [];
-  @track data;
-  @track error;
-  @track success = false;
-  @track status;
-  @track columns = [
+  data;
+  error;
+  success = false;
+  status;
+  columns = [
     // { label: 'Schedule Options', fieldName: 'action', type: 'action', typeAttributes: { rowActions: actions, menuAlignment: 'left'}}, 
     { label: 'Id', fieldName: 'Id'},
     { label: 'Week', fieldName: 'Week__c'},
