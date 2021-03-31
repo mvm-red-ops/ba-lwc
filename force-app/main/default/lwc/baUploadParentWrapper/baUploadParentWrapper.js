@@ -54,9 +54,10 @@
         */
   
 
-import { LightningElement, track } from 'lwc';
+import { LightningElement, track, api } from 'lwc';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 import readCSV from '@salesforce/apex/PPTrafficUploader.readCSVFile';
+import SystemModstamp from '@salesforce/schema/Account.SystemModstamp';
 
 export default class BaUploadParentWrapper extends LightningElement {
   dealProgramSelected
@@ -71,7 +72,7 @@ export default class BaUploadParentWrapper extends LightningElement {
   selectedRows
   schedules
   displayDatatable
-  @track data
+  data
  
 
   //handles selection of deal program from dropdown
@@ -86,13 +87,14 @@ export default class BaUploadParentWrapper extends LightningElement {
 
     this.documentId = fileObj.documentId
     if(this.documentId && this.dealProgram)
+    this.spinnerHandler('show')
     this.handleUploadToSF(this.documentId, this.dealProgram)
   }
 
   //used to accept the selected schedules to update
   handleScheduleSelection(event){
-    window.console.log(`scheudle selected: ${event.detail}`)
-    this.selectedRows = event.detail.selectedRows
+    window.console.log(`scheudle selected: ${JSON.stringify(event.detail)}`)
+    this.selectedRows = event.detail
   } 
 
 
@@ -122,33 +124,48 @@ export default class BaUploadParentWrapper extends LightningElement {
      }
 
 
+  //toasts 
+
+  showToast(call, error){
+    let event;
+    if(call == 'success'){
+        event = new ShowToastEvent({
+            title: 'Success!!',
+            message: 'BA was successfully uploaded!!!',
+            variant: 'success',
+        })
+    } else if (call == 'error'){
+        event = new ShowToastEvent({
+          title: 'Error!!',
+          message:`Ooohh! An error occurred! ${error}`,
+          variant: 'error',
+      })
+    }
+   this.dispatchEvent(event)
+  }
+
+  
+
+
 
   //handle upload to SF 
 
     //callback from csv file upload
     async handleUploadToSF(documentId, dealProgram) {
 
-      this.spinnerHandler('show')
-
       // calling apex class        
       readCSV({idContentDocument: documentId, dealProgram: dealProgram })
         .then(result => {
             //result is a map of schedules 
             this.data = result;
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Success!!',
-                    message: 'BA was successfully uploaded!!!',
-                    variant: 'success',
-                }),
-            );
+            this.showToast('success')
         })
        .then(() => {
          const schedMap = this.formatData(this.data)
          this.dataTableScheds = [...schedMap.tableFormat.unmatched, ...schedMap.tableFormat.matched]
-         this.exportSchedules = schedMapReturn.exportFormat
-         this.unmatchedCount = schedMapReturn.tableFormat.unmatched.length
-         this.matchedCount = schedMapReturn.tableFormat.matched.length
+         this.exportSchedules = schedMap.exportFormat
+         this.unmatchedCount = schedMap.tableFormat.unmatched.length
+         this.matchedCount = schedMap.tableFormat.matched.length
          this.displayDatatable = true
         }) 
        .then( result => {
@@ -160,23 +177,65 @@ export default class BaUploadParentWrapper extends LightningElement {
             window.console.log('error: ', error)
             window.console.log('error message: ',error.body.message)
 
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Error!!',
-                    message: "Ooohh! Please read error below!",
-                    variant: 'error',
-                }),
-            );     
+            this.showToast('error', error)   
         })
     }
 
+
+  @api
+  updateSchedules(event) {
+
+    window.console.log('update schedule function intiated')
+    window.console.log(`selected rows: ${this.selectedRows}`)
+    window.console.log(`export scheds: ${JSON.stringify(this.exportSchedules)}`)
+    const allSchedsUpdate = this.exportSchedules.matched;
+    const schedsToUpdate = [];
+    //iterate through matched and then unmatched schedules, checking whether their id is in the array of selected rows
+    //if it is not, it is added to the unselected arrays above
+    for(let i = 0; i < allSchedsUpdate.length; i++){
+      let curr = allSchedsUpdate[i]
+
+      if(selectedRowIds.includes(curr.Id)){
+        schedsToUpdate.push(curr)
+      } else {
+        continue
+      }
+    }
+    window.console.log(`shceds to update: ${schedsToUpdate}`)
+    return
+    const selectedRowIds = this.selectedRows.length > 0 ? this.selectedRows.map( row => row.Id) : []
+
+
+    
+
+  
+    updateSchedules({scheds})
+              .then(result => { 
+                  this.data = result;
+                  this.success = true;
+                  window.console.log('in success')
+                  this.error = undefined;
+              })
+              .then( () => this.formatUploadedData(this.data) )
+              .then( () => this.showToast('success'))
+              .catch(error => {
+                window.console.log(error)
+                window.console.log('error: ', JSON.stringify(error));
+                this.showToast('error', error)    
+                this.spinnerHandler('hide')
+                this.dispatchEvent(this.updateFailed);
+                this.error = error.body.message;
+              });
+
+
+      return null;
+    }
 
      
     //-----formatting helpers start------
 
     //formatData function accepts 'apiData' which is an array of Objects with the  shape described right above
     formatData(apiData){
-      let dictionary = {'matched': 0, 'unmatchedBA': 0, 'unmatchedSF': 0}
       let schedMap = {
         tableFormat: {
           unmatched: [], 
@@ -360,6 +419,39 @@ export default class BaUploadParentWrapper extends LightningElement {
   
         return [schedObj, exportSched]
     }  
+
+
+    formatUploadedData(data){
+      try{
+        this.success = true
+        const statusObject = Object.keys(data)[0]
+        const schedules = Object.values(data)[0]
+        //format data
+        window.console.log('finding status')
+        window.console.log(JSON.stringify(statusObject))
+
+        const formattedSchedules = [];
+        for(let i = 0; i < schedules.length; i++){
+          let curr = schedules[i]
+          let formatted = Object.assign({}, curr)
+          const isSalesforceId = curr.Id.split(' ').length === 1
+
+          if(!isSalesforceId){
+            formatted.Id = 'Record From BA'
+          }
+
+          formattedSchedules.push(formatted)
+        }
+
+        this.data = formattedSchedules
+      } catch(e){
+        window.console.log(e)
+        window.console.log('error in try catch for return data')
+      }
+
+      this.spinnerHandler('hide')
+
+    }
 
   
     //formatting helpers end

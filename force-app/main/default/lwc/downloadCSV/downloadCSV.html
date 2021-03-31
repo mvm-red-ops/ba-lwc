@@ -1,0 +1,14 @@
+<template>
+    <lightning-card class="slds-m-around_x-small" style="text-align:left;" if:true={success} icon-name="custom:custom63"  title="Export Data">
+        <div if:true={data}>
+            <div class="slds-p-around_medium lgc-bg-inverse">
+                <div>Do you want download data as a CSV format, Click Here &nbsp;
+                    <lightning-button icon-name="utility:download" 
+                                        label="Download as CSV" 
+                                        title="Download CSV File"
+                                        onclick={downloadCSVFile} variant="brand"></lightning-button>
+                </div>
+            </div>
+        </div>    
+        </lightning-card>
+</template>
