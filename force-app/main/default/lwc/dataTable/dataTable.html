@@ -2,8 +2,10 @@
     <lightning-card>        
         <!-- Data Table start -->
         <div>
-            <div if:true={tableScheds} style="height: 22rem;">
-                <lightning-datatable columns={columns} 
+            <div if:true={tableScheds} style="height: 22rem; color: black;">
+                <lightning-datatable 
+                                    class="slds-no-row-hover"
+                                    columns={columns} 
                                     data={tableScheds} 
                                     key-field="Id"
                                     onrowselection={handleScheduleView}

@@ -1,6 +1,4 @@
 import { LightningElement, api, track } from 'lwc';
-import updateSchedules from '@salesforce/apex/TrafficUpdateFromBA_LWC.updateSchedules';
-import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 
 
 

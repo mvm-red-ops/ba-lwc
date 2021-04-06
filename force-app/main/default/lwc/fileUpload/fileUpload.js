@@ -1,8 +1,5 @@
-import { LightningElement, track, api } from 'lwc';
-import {ShowToastEvent} from 'lightning/platformShowToastEvent';
+import { LightningElement, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import readCSV from '@salesforce/apex/PPTrafficUploader.readCSVFile';
-import Id from '@salesforce/user/Id';
 
 const actions = [
   { label: 'Compare Schedule Values', name: 'compare_schedule' }
@@ -15,7 +12,7 @@ export default class ReadCSVFileInLWC extends NavigationMixin(LightningElement) 
     displayFileUpload = true
     toggleSpinner = false
     updateResult
-    myRecordId = Id;
+    @api myRecordI
     displayFileUpload = true;
 
     get acceptedFormats() {

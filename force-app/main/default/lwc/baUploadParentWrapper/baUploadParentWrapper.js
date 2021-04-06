@@ -54,10 +54,11 @@
         */
   
 
-import { LightningElement, track, api } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 import readCSV from '@salesforce/apex/PPTrafficUploader.readCSVFile';
-import SystemModstamp from '@salesforce/schema/Account.SystemModstamp';
+import updateSchedules from '@salesforce/apex/TrafficUpdateFromBA_LWC.updateSchedules';
+import Id from '@salesforce/user/Id';
 
 export default class BaUploadParentWrapper extends LightningElement {
   dealProgramSelected
@@ -73,6 +74,7 @@ export default class BaUploadParentWrapper extends LightningElement {
   schedules
   displayDatatable
   data
+  myRecordId = Id;
  
 
   //handles selection of deal program from dropdown
@@ -121,6 +123,8 @@ export default class BaUploadParentWrapper extends LightningElement {
       this.count = null
       this.matchedCount = null
       this.unmatchedCount = null
+      this.exportSchedules = null
+      this.selectedRows = null
      }
 
 
@@ -128,6 +132,8 @@ export default class BaUploadParentWrapper extends LightningElement {
 
   showToast(call, error){
     let event;
+    window.console.log(`call ${call}`)
+    window.console.log(`error ${error}`)
     if(call == 'success'){
         event = new ShowToastEvent({
             title: 'Success!!',
@@ -138,6 +144,12 @@ export default class BaUploadParentWrapper extends LightningElement {
         event = new ShowToastEvent({
           title: 'Error!!',
           message:`Ooohh! An error occurred! ${error}`,
+          variant: 'error',
+      })
+    } else if ( call == 'no schedules selected' ){
+      event = new ShowToastEvent({
+          title: 'No Selection!!',
+          message:`No schedules were selected! Please select the ones you'd like to update.`,
           variant: 'error',
       })
     }
@@ -182,14 +194,28 @@ export default class BaUploadParentWrapper extends LightningElement {
     }
 
 
+    updateSchedules(event) {
+      window.console.log(`selected rows: ${this.selectedRows}`)
+      if(!this.selectedRows || this.selectedRows.length < 1) {
+        this.showToast('no schedules selected')
+        return
+      } else{
+        this.updateSchedulesExecute(event) 
+      }
+    }
+
   @api
-  updateSchedules(event) {
+  updateSchedulesExecute(event) {
+    this.spinnerHandler('show')
 
     window.console.log('update schedule function intiated')
-    window.console.log(`selected rows: ${this.selectedRows}`)
-    window.console.log(`export scheds: ${JSON.stringify(this.exportSchedules)}`)
+    window.console.log(`export scheds: ${JSON.stringify(this.exportSchedules.matched)}`)
+
     const allSchedsUpdate = this.exportSchedules.matched;
     const schedsToUpdate = [];
+    const selectedRowIds = this.selectedRows.length > 0 ? this.selectedRows.map( row => row.Id) : []
+    const scheds = { 'matched' : [], 'unmatched': []}
+    window.console.log(`selected ids: ${selectedRowIds}`)
     //iterate through matched and then unmatched schedules, checking whether their id is in the array of selected rows
     //if it is not, it is added to the unselected arrays above
     for(let i = 0; i < allSchedsUpdate.length; i++){
@@ -201,14 +227,11 @@ export default class BaUploadParentWrapper extends LightningElement {
         continue
       }
     }
-    window.console.log(`shceds to update: ${schedsToUpdate}`)
-    return
-    const selectedRowIds = this.selectedRows.length > 0 ? this.selectedRows.map( row => row.Id) : []
-
-
-    
-
+    scheds.matched = schedsToUpdate
+    scheds.unmatched = this.exportSchedules.unmatched || [{'Id': 'N/a'}]
   
+    window.console.log(`scheds: ${JSON.stringify(scheds)}`)
+
     updateSchedules({scheds})
               .then(result => { 
                   this.data = result;
@@ -431,6 +454,7 @@ export default class BaUploadParentWrapper extends LightningElement {
         window.console.log(JSON.stringify(statusObject))
 
         const formattedSchedules = [];
+        if(!schedules || !schedules.length) return
         for(let i = 0; i < schedules.length; i++){
           let curr = schedules[i]
           let formatted = Object.assign({}, curr)
@@ -450,6 +474,7 @@ export default class BaUploadParentWrapper extends LightningElement {
       }
 
       this.spinnerHandler('hide')
+      this.displayDatatable = false
 
     }
 
